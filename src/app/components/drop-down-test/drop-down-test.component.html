@@ -1,4 +1,4 @@
-<form [formGroup]="countryForm">
+<form [formGroup]="countryForm" class="dropdown">
   <div>
     <label>Country</label>
     <select formControlName="country">
@@ -11,12 +11,10 @@
         </option>
       </ng-container>
     </select>
-  </div>
-  <div>
     <label>city</label>
     <select formControlName="city">
       <ng-container *ngIf="cities">
-        <option value="{{ city }}" *ngFor="let city of cities">
+        <option *ngFor="let city of cities">
           {{ city }}
         </option>
       </ng-container>

@@ -10,22 +10,6 @@ import {
  * Food data with nested structure.
  * Each node has a name and an optiona list of children.
  */
-interface Countries {
-  name: string;
-  children?: Countries[];
-}
-
-const TREE_DATA: Countries[] = [
-  {
-    name: 'Country',
-    children: [
-      {
-        name: 'city',
-        children: [{ name: 'city1' }, { name: 'City2' }],
-      },
-    ],
-  },
-];
 
 /** Flat node with expandable and level information */
 interface ExampleFlatNode {
@@ -37,23 +21,49 @@ interface ExampleFlatNode {
 /**
  * @title Tree with flat nodes
  */
+
+interface Country {
+  name: string;
+  children: [
+    {
+      name: string;
+    }
+  ];
+  cities: string[];
+}
 @Component({
   selector: 'example-tree',
   templateUrl: 'example-tree.component.html',
   styleUrls: ['example-tree.component.css'],
 })
 export class ExampleTreeComponent implements OnInit {
+  TREE_DATA = [
+    {
+      name: 'Countries',
+      children: [
+        {
+          name: 'someCountry',
+          children: [{ name: 'city1' }, { name: 'City2' }],
+        },
+      ],
+    },
+  ];
   constructor(private countryState: CountryStateService) {
-    this.dataSource.data = TREE_DATA;
+    this.dataSource.data = this.TREE_DATA;
   }
+  countries: Country;
+  cities: any;
+
   ngOnInit(): void {
     this.countryState.getCountry().subscribe((res: any) => {
       this.countries = res.data;
+      // this.countries.map(country=>{
+      //   console.log(country)
+      // });
     });
   }
-  countries: any;
-  cities: any;
-  private transformer = (node: Countries, level: number) => {
+
+  private transformer = (node, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
