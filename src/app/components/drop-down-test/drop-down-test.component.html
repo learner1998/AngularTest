@@ -1,0 +1,25 @@
+<form [formGroup]="countryForm">
+  <div>
+    <label>Country</label>
+    <select formControlName="country">
+      <ng-container *ngIf="countries">
+        <option
+          value="{{ i }}"
+          *ngFor="let country of countries; let i = index"
+        >
+          {{ country.country }}
+        </option>
+      </ng-container>
+    </select>
+  </div>
+  <div>
+    <label>city</label>
+    <select formControlName="city">
+      <ng-container *ngIf="cities">
+        <option value="{{ city }}" *ngFor="let city of cities">
+          {{ city }}
+        </option>
+      </ng-container>
+    </select>
+  </div>
+</form>
