@@ -6,60 +6,40 @@ import {
   MatTreeFlattener,
 } from '@angular/material/tree';
 
-/**
- * Food data with nested structure.
- * Each node has a name and an optiona list of children.
- */
-
-/** Flat node with expandable and level information */
 interface ExampleFlatNode {
   expandable: boolean;
   name: string;
   level: number;
 }
 
-/**
- * @title Tree with flat nodes
- */
-
-interface Country {
-  name: string;
-  children: [
-    {
-      name: string;
-    }
-  ];
-  cities: string[];
-}
 @Component({
   selector: 'example-tree',
   templateUrl: 'example-tree.component.html',
   styleUrls: ['example-tree.component.css'],
 })
 export class ExampleTreeComponent implements OnInit {
+  constructor(private countryState: CountryStateService) {}
+  countries: any;
+  newCountries: any;
   TREE_DATA = [
     {
-      name: 'Countries',
-      children: [
-        {
-          name: 'someCountry',
-          children: [{ name: 'city1' }, { name: 'City2' }],
-        },
-      ],
+      name: 'country',
+      children: [],
     },
   ];
-  constructor(private countryState: CountryStateService) {
-    this.dataSource.data = this.TREE_DATA;
-  }
-  countries: Country;
-  cities: any;
-
   ngOnInit(): void {
     this.countryState.getCountry().subscribe((res: any) => {
       this.countries = res.data;
-      // this.countries.map(country=>{
-      //   console.log(country)
-      // });
+      console.log(this.countries);
+
+      this.newCountries = this.countries.map((item) => ({
+        name: item.country,
+        children: item.cities.map((item) => ({
+          name: item,
+        })),
+      }));
+      this.TREE_DATA = this.newCountries;
+      this.dataSource.data = this.TREE_DATA;
     });
   }
 
@@ -87,7 +67,3 @@ export class ExampleTreeComponent implements OnInit {
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 }
-
-/**  Copyright 2019 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license */

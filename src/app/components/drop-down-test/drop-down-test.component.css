@@ -1,3 +1,12 @@
 .dropdown {
   margin: 20px;
 }
+.dropdown-select {
+  padding: 5px;
+  margin: 5px;
+  border-radius: 12px;
+}
+.dropdown-child {
+  padding: 5px 10px;
+  margin: 5px;
+}
